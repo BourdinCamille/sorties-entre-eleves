@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Création d'un nouveau participant {% endblock %}
+{% block main %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <h1 style="text-align: center">Création d'un nouveau participant</h1>
+        <div class="container-profile w-50">
+        {% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+            {{ form_start(registrationForm) }}
+            {{ form_widget(registrationForm) }}
+            <button type="submit">Enregistrer</button>
+            <button type="submit"><a href="{{ path('home_home') }}">Annuler</a></button>
+            {{ form_end(registrationForm) }}
+        </div>
+{% endblock %}

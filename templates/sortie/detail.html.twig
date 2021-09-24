@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Détails de la sortie {% endblock %}
+{% block main %}
+    <h1 style="text-align: center">Détail de la sortie</h1>
+    <div class="container-main">
+        <div class="form-row col-sm-12 col-xs-12">
+            <div class="pr-5">
+                <h5>Nom de la sortie : {{ sortie.nom }}</h5>
+                <h5>Date et heure de la sortie : {{ sortie.dateHeureDebut | date('d/m/Y H:i') }} </h5>
+                <h5>Date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/Y')  }} </h5>
+                <h5>Nombres de places : {{ sortie.nbInscriptionsMax }} </h5>
+                <h5>Durée : {{ sortie.duree }} minutes </h5>
+                {% if sortie.infosSortie %}
+                <h5>Description et infos : <br>{{ sortie.infosSortie }} </h5>
+                {% endif %}
+            </div>
+            <div class="pl-5">
+                <h5>Campus : {{ sortie.siteOrganisateur }}</h5>
+                <h5>Lieu : {{ sortie.lieu }}</h5>
+                <h5>Rue : {{ sortie.lieu.rue }}</h5>
+                <h5>Code Postal : {{ sortie.lieu.ville.codePostal}}</h5>
+                {% if sortie.lieu.latitude and sortie.lieu.longitude %}
+                <h5>Latitude : {{ sortie.lieu.latitude }}</h5>
+                <h5>Longitude : {{ sortie.lieu.longitude }}</h5>
+                {% endif %}
+                {% if sortie.etat == 'Annulée' %}
+                    <h5 style="color: red">Motif d'annulation : {{ sortie.motifAnnulation }}</h5>
+                {% endif %}
+                {% if app.user.sorties.contains(sortie) and sortie.dateHeureDebut > 'now' %}
+                    <button type="submit"><a href="{{ path('sortie_desistement', {'id': sortie.id})  }}">Se désister</a></button>
+                {% elseif sortie.participants | length != sortie.nbInscriptionsMax and sortie.dateLimiteInscription > 'now' and sortie.etat == 'Ouverte' %}
+                    <button type="submit"><a href="{{ path('sortie_inscription', {'id': sortie.id})}}">S'inscrire</a></button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div>
+        <h5>Liste des participants inscrits :</h5>
+        <div>
+            <div class="tableFixHead container-tableau tableFixHeadSortie">
+                <div class="row">
+                    <div class="col-12">
+                        <table>
+                            <thead class="tableHead">
+                            <tr class="tr-title">
+                                <td class="tableHead">Pseudo</td>
+                                <td class="tableHead">Nom</td>
+                            </tr>
+                            </thead>
+                            {% for participant in sortie.participants %}
+                                <tr>
+                                    <td><a href="{{ path('profil_participant', {'id': participant.id }) }}">{{ participant.username }}</a></td>
+                                    <td>{{ participant.prenom }} {{ participant.nom | upper }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

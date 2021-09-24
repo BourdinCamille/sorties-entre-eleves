@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %} Liste des participants {% endblock %}
+{% block main %}
+    <h1>Liste des participants</h1>
+    <div class="tableFixHead container-tableau">
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead class="tableHead">
+                    <tr class="tr-title">
+                        <td class="tableHead">Pseudo</td>
+                        <td class="tableHead">Prenom</td>
+                        <td class="tableHead">Nom</td>
+                        <td class="tableHead">Campus</td>
+                        <td class="tableHead">Actif</td>
+                        <td class="tableHead">Actions</td>
+                    </tr>
+                    </thead>
+                    {% for participant in participants %}
+                        <tr>
+                            <td><a href="{{ path('profil_participant', {'id':participant.id}) }}">{{ participant.username }}</a></td>
+                            <td>{{ participant.prenom }}</td>
+                            <td>{{ participant.nom }}</td>
+                            <td>{{ participant.campus }}</td>
+                            {% if(participant.isActive(true)) %}
+                                <td class="text-center">X</td>
+                            {% else %}
+                                <td> </td>
+                            {% endif %}
+                            <td>
+                            {% if(participant.isActive(true)) %}
+                                <a href="{{ path('participant_desactiver', {'id':participant.id}) }}">Désactiver</a>
+                            {% else %}
+                                <a href="{{ path('participant_activer', {'id':participant.id}) }}">Activer</a>
+                            {% endif %}
+                                <a href="{{ path('participant_supprimer', {'id':participant.id}) }}"
+                                   onclick="return confirm('Voulez-vous vraiment supprimer ce participant ?')"
+                                >Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

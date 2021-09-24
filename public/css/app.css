@@ -1,0 +1,314 @@
+/* GLOBAL STYLE */
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    text-align: left;
+}
+
+.container {
+    min-width:auto;
+    max-width: 95%;
+    margin: auto;
+    height: auto;
+}
+
+.container-title {
+    max-width: 100%;
+}
+
+.container-main {
+    min-width:auto;
+    max-width: 85%;
+    margin: auto;
+}
+
+.container-tableau {
+    min-width:auto;
+    max-width: 90%;
+    margin: auto;
+    border:2px solid black;
+    max-height:400px;
+    height: max-content;
+}
+
+.container-login {
+    min-width:auto;
+    max-width: max-content;
+    margin: auto;
+}
+
+.container-profile {
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 7rem;
+}
+
+.picture-preview {
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.col-sm-6 {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.col-12 {
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.flashes .flash {
+    padding: 20px;
+    background-color: dodgerblue;
+    color: #FFF;
+    font-size: 1.5rem;
+    margin: 10px 0;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.flashes .flash-success {
+    background-color: #718C00;
+}
+
+.flashes .flash-error {
+    background-color: #AA3333;
+}
+
+/* HEADER */
+.site-title {
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.site-title img {
+    height: 48px;
+    display: block;
+    margin-right: 5px;
+}
+
+header {
+    margin: 5px 0;
+    display: flex;
+    padding-left: 0;
+}
+nav {
+    width: 100%;
+}
+nav ul {
+    list-style-type: none;
+    width: 100%;
+}
+
+nav li {
+    float: right;
+}
+
+header nav a {
+    display: block;
+    padding: 5px 8px;
+}
+
+/* MAIN */
+main {
+    padding: 30px 0;
+    border-top: 1px solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
+}
+
+h1 {
+    margin-bottom: 1.56rem;
+}
+
+h5 {
+    margin-bottom: 1.56rem;
+}
+
+/* FOOTER */
+footer {
+    padding: 15px 0;
+    text-align: center;
+    color: black;
+    width: 100%;
+    height: auto;
+    position:relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+button {
+    margin-top: 20px;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: grey;
+    color: white;
+}
+
+/* FORMS */
+#inputUsername {
+    width: 15rem;
+}
+
+#inputPassword {
+    width: 15rem;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+    width: 100%;
+}
+
+.form-control {
+    width: 75%;
+}
+
+form input, form textarea {
+    margin-bottom: 12px;
+}
+
+form textarea {
+    min-height: 70px;
+}
+
+form button {
+    margin-top: 20px;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+form button:hover {
+    background-color: grey;
+    color: white;
+}
+
+form ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+form ul > li {
+    display: block;
+    font-weight: bold;
+    color: #AA3333;
+}
+
+.custom-file {
+    width: 20rem;
+}
+
+.custom-file-label::after {
+    content: "Parcourir";
+}
+
+legend {
+    display: none;
+}
+
+/* TABLES */
+.tableau {
+    max-width: 100%;
+    width: 100%;
+}
+
+table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+th, td {
+    border:1px solid black;
+}
+
+td {
+    text-align:left;
+    min-width: 70px;
+    max-width: 180px;
+    height: 40px;
+}
+
+.tr-title {
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+tr:nth-child(even) {
+    background: #CCC
+}
+
+tr:nth-child(odd) {
+    background: #FFF
+}
+
+.tableFixHead {
+    overflow-y: auto;
+    height: max-content;
+    /*height: 260px;*/
+}
+
+.tableFixHead thead td {
+    position: sticky;
+    top: -1px;
+}
+
+.tableHead {
+    background:white;
+}
+
+.tableFixHeadSortie {
+    max-height: 200px;
+    height: max-content;
+    width: max-content;
+    margin-left: 0;
+}
+
+.tableFixHeadSortie thead td {
+    min-width: 200px;
+}
+
+img {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.img-preview {
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
+}
+
+
+

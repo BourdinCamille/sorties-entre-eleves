@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent()}} | Profil - {{ participant.username }} {% endblock %}
+{% block main %}
+    <div class="container-profile">
+        <h1 class="d-flex justify-content-center">{{ participant.username }}</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if participant.photo %}
+                                <div class="d-flex justify-content-end pr-3">
+                                    <img src="{{ asset('uploads/'~participant.photo) }}">
+                                </div>
+                            {% else %}
+                                <div class="d-flex justify-content-end pr-3">
+                                    <img src="{{ asset('img/default_picture.png') }}">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-6 pl-3">
+                            <p>Prénom : {{ participant.prenom }}</p>
+                            <p>Nom : {{ participant.nom }}</p>
+                            <p>Téléphone : {{ participant.telephone }}</p>
+                            <p>Email : {{ participant.email }}</p>
+                            <p>Campus : {{ participant.campus }}</p>
+                            <button type="submit"><a href="{{ path('home_home') }}">Retour</a></button>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% if(participant.isActive(true)) %}
+                                    <button type="submit"><a href="{{ path('participant_desactiver', {'id':participant.id}) }}">Désactiver</a></button>
+                                    <button type="submit"><a href="{{ path('participant_supprimer', {'id':participant.id}) }}">Supprimer</a></button>
+                                {% else %}
+                                    <button type="submit"><a href="{{ path('participant_activer', {'id':participant.id}) }}">Activer</a></button>
+                                    <button type="submit"><a href="{{ path('participant_supprimer', {'id':participant.id}) }}">Supprimer</a></button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

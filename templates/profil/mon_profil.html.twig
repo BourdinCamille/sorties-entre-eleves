@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Mon profil {% endblock %}
+{% block main %}
+    <div class="container-profile">
+    <h1 class="d-flex justify-content-center">Mon profil</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-6 d-flex justify-content-center">
+                        {% if app.user.photo %}
+                            <div class="mt-4 mb-7">
+                                <img src="{{ asset('uploads/'~app.user.photo) }}">
+                            </div>
+                        {% else %}
+                            <div class="mt-4 mb-7">
+                                <img src="{{ asset('img/default_picture.png') }}">
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-6 pl-3">
+                        {{ form_start(profilForm) }}
+                        {{ form_row(profilForm.username) }}
+                        {{ form_row(profilForm.prenom) }}
+                        {{ form_row(profilForm.nom) }}
+                        {{ form_row(profilForm.telephone) }}
+                        {{ form_row(profilForm.email) }}
+                        {{ form_row(profilForm.password) }}
+                        {{ form_row(profilForm.campus) }}
+                        <div class="row" onchange="loadFile(event)">
+                            {{ form_row(profilForm.photo) }}
+                            <img class="img-preview" id="output"/>
+                        </div>
+                        <button type="submit" id="enregistrer">Enregistrer</button>
+                        <button type="submit" id="annuler"><a href="{{ path('home_home') }}">Annuler</a></button>
+                        {{ form_end(profilForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

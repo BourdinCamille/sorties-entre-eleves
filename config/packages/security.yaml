@@ -1,0 +1,39 @@
+security:
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\Participant
+
+    firewalls:
+        main:
+            provider: app_user_provider
+            anonymous: true
+            lazy: true
+            guard:
+                authenticators:
+                    - App\Security\AppAuthenticator
+            logout:
+                path: app_logout
+                target: app_login
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+    encoders:
+        App\Entity\Participant:
+            algorithm: auto
+
+    access_control:
+        - { path: ^/connexion$, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+

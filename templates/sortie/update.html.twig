@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Modifier une sortie {% endblock %}
+{% block main %}
+    <h1>Modifier une sortie</h1>
+    <div class="container-main">
+        {% form_theme sortieForm 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(sortieForm) }}
+        <div class="form-row col-sm-12 col-xs-12">
+            <div class="col-sm-5 col-xs-12 p-3">
+                {{ form_row(sortieForm.nom) }}
+                {{ form_row(sortieForm.dateHeureDebut) }}
+                {{ form_row(sortieForm.dateLimiteInscription) }}
+                {{ form_row(sortieForm.nbInscriptionsMax) }}
+                {{ form_row(sortieForm.duree) }}
+            </div>
+            <div class="col-sm-5 col-xs-12 p-3">
+                {{ form_row(sortieForm.infosSortie) }}
+                <p>Campus : {{ app.user.campus }}</p>
+                {{ form_row(sortieForm.lieu) }}
+                <button type="submit" id="enregistrer-sortie">Enregistrer</button>
+                <button type="submit" id="retour-accueil"><a href="{{ path('home_home') }}">Retour</a></button><br>
+                <button type="submit" id="publier-sortie"><a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier la sortie</a></button>
+                <button type="submit" id="supprimer-sortie"><a href="{{ path('sortie_supprimer', {'id':sortie.id}) }}"
+                                                               onclick="return confirm('Voulez-vous vraiment supprimer cette sortie ?')"
+                                                            >Supprimer la sortie
+                                                            </a>
+                </button>
+            </div>
+        </div>
+        {{ form_end(sortieForm) }}
+    </div>
+{% endblock %}
+
+
+
+

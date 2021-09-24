@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"
+              x-content-type-options="nosniff">
+        <meta name="author" content="Camille BOURDIN et Aurélie PAPERA">
+        <meta name="description" content="sorties-entre-eleves est une application d'organisation de sorties entre les élèves des différents campus d'ENI Ecole Informatique.">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{% block title %} Sorties entre élèves {% endblock %}</title>
+        {% block stylesheets %}
+        <link rel="icon" href="{{ asset('img/favicon.png') }}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap">
+        {% endblock %}
+    </head>
+    <body>
+    {% block body %}
+    <div class="container">
+        <header>
+            <a class="site-title" href="{{ path('home_home') }}" title="Sortir">
+                <img src="{{ asset('img/logo.png') }}" alt="Sortir">
+            </a>
+            <nav>
+                <ul>
+                    {% if is_granted('ROLE_USER') %}
+                        <li><a href="{{ path('app_logout') }}" title="Sortir | Déconnexion">Se déconnecter</a></li>
+                        <li><a href="{{ path('my_profil') }}" title="Sortir | Profil">Mon profil</a></li>
+                        <li><a href="{{ path('home_home') }}" title="Sortir | Accueil">Accueil</a></li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('app_register') }}" title="Sortir | Nouveau participant">Créer un participant</a></li>
+                        <li><a href="{{ path('liste_participants') }}" title="Sortie | Liste participants">Liste des participants</a></li>
+                        <li><a href="#" title="Sortir | Campus">Campus</a></li>
+                        <li><a href="#" title="Sortir | Villes">Villes</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div id="flashMessages" class="flashes">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash flash-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% block main %}{% endblock %}
+        </main>
+        {% block javascripts %}
+            <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ asset('js/jquery-3.6.0.js') }}"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% endblock %}
+        <footer>
+            <p>&copy; Aurélie &amp; Camille - 2021</p>
+        </footer>
+    </div>
+    {% endblock %}
+    </body>
+</html>

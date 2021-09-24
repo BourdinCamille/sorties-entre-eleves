@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Accueil {% endblock %}
+{% block main %}
+    <div class="container-title">
+        <div class="row">
+            <div class="col-sm-6 col-xs-12">
+                <h2>Filtrer les sorties</h2>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="float-right">
+                    <p>Date du jour : {{ currentDate | date('d/m/Y') }}</p>
+                    <p>Participant(e) : {{ app.user.username }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-main">
+        {% form_theme searchForm 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(searchForm) }}
+        <div class="form-row col-sm-12 col-xs-12">
+            <div class="col-sm-5 col-xs-12 pr-3">
+                {{ form_row(searchForm.campusSelectionne) }}
+                {{ form_row(searchForm.q) }}
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        {{ form_row(searchForm.dateMin) }}
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        {{ form_row(searchForm.dateMax) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 col-xs-12 p-3">
+                {{ form_row(searchForm.isOrganisateur) }}
+                {{ form_row(searchForm.isInscrit) }}
+                {{ form_row(searchForm.isNotInscrit) }}
+                {{ form_row(searchForm.isPassee) }}
+            </div>
+            <div class="col-sm-2 col-xs-12 p-3 text-center">
+                <button type="submit">Rechercher</button>
+                <button type="submit"><a href="{{ path('home_home') }}">Rafraîchir</a></button>
+            </div>
+        </div>
+        {{ form_end(searchForm) }}
+    </div>
+    <div class="tableFixHead container-tableau">
+        <div class="row">
+            <div class="col-12">
+                <table>
+                    <thead class="tableHead">
+                    <tr class="tr-title">
+                        <td class="tableHead">Nom de la sortie</td>
+                        <td class="tableHead">Date de la sortie</td>
+                        <td class="tableHead">Clôture</td>
+                        <td class="tableHead">Inscrits/places</td>
+                        <td class="tableHead">État</td>
+                        <td class="tableHead">Inscrit</td>
+                        <td class="tableHead">Organisateur</td>
+                        <td class="tableHead">Actions</td>
+                    </tr>
+                    </thead>
+                    {% for sortie in sorties %}
+                        <tr>
+                            <td><a href="{{ path('sortie_detail', {'id': sortie.id }) }}">{{ sortie.nom }}</a></td>
+                            <td>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}</td>
+                            <td>{{ sortie.dateLimiteInscription | date('d/m/Y') }}</td>
+                            <td>{{ sortie.participants | length }} / {{ sortie.nbInscriptionsMax }}</td>
+                            <td>{{ sortie.etat }}</td>
+                            {% if(app.user.sorties.contains(sortie)) %}
+                                <td class="text-center">X</td>
+                            {% else %}
+                                <td> </td>
+                            {% endif %}
+                            <td><a href="{{ path('profil_participant', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur }}</a></td>
+                            <td>
+                                {% if app.user != sortie.organisateur or sortie.etat.libelle == 'Passée' %}
+                                    <a href="{{ path('sortie_detail', {'id': sortie.id}) }}">Afficher</a>
+                                {% elseif app.user == sortie.organisateur and sortie.etat.libelle == 'Annulée' %}
+                                    <a href="{{ path('sortie_detail', {'id': sortie.id}) }}">Afficher</a>
+                                {% elseif sortie.etat.libelle == 'Clôturée' %}
+                                    <a href="{{ path('sortie_detail', {'id': sortie.id}) }}">Afficher</a>
+                                {% endif %}
+                                {% if app.user.sorties.contains(sortie) and sortie.dateHeureDebut > currentDate %}
+                                    <a href="{{ path('sortie_desistement', {'id': sortie.id}) }}">Se désister</a>
+                                {% elseif sortie.participants | length != sortie.nbInscriptionsMax and sortie.dateLimiteInscription > currentDate and sortie.etat.libelle == 'Ouverte' %}
+                                    <a href="{{ path('sortie_inscription', {'id': sortie.id}) }}">S'inscrire</a>
+                                {% endif %}
+                                {% if app.user == sortie.organisateur and sortie.etat.libelle == 'Créée' %}
+                                    <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">Modifier</a>
+                                {% endif %}
+                                {% if app.user == sortie.organisateur and sortie.etat.libelle == 'Créée' %}
+                                    <a href="{{ path('sortie_publier', {'id': sortie.id}) }}">Publier</a>
+                                {% endif %}
+                                {% if app.user == sortie.organisateur and sortie.dateHeureDebut > currentDate and sortie.etat.libelle == 'Ouverte' %}
+                                    <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="submit"><a href="{{ path('sortie_add') }}">Créer une sortie</a></button>
+    </div>
+{% endblock %}

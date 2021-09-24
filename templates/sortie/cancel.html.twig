@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} | Annuler une sortie {% endblock %}
+{% block main %}
+    <h1>Annuler une sortie</h1>
+    <div>
+        <p>Nom de la sortie : {{ sortie.nom }}</p>
+        <p>Date de la sortie : {{ sortie.dateHeureDebut | date('d/m/Y') }}</p>
+        <p>Campus : {{ sortie.siteOrganisateur }}</p>
+        <p>Lieu : {{ sortie.lieu }}</p>
+        {{ form_start(annulationForm) }}
+        {{ form_widget(annulationForm) }}
+            <button type="submit" id="enregistrer-annulation">Confirmer l'annulation</button>
+            <button type="submit" id="retour-accueil"><a href="{{ path('home_home') }}">Retour</a></button>
+        {{ form_end(annulationForm) }}
+    </div>
+{% endblock %}
