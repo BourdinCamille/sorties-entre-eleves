@@ -53,14 +53,29 @@ class SortieRepository extends ServiceEntityRepository
     */
 
     /**
+     * @return Sortie[]
+     * Retourne toutes les sorties à l'exception de celles dont la date remonte à il y a plus d'un mois.
+     */
+    public function findAllUntilLastMonth(): array
+    {
+        $dateLimite = date('Y-m-d H:i', strtotime('-1 months'));
+        $query = $this
+            ->createQueryBuilder('s')
+            ->andWhere('s.dateHeureDebut > :dateLimite')
+            ->setParameter(':dateLimite', $dateLimite)
+            ->orderBy('s.dateHeureDebut','DESC');
+        return $query->getQuery()->getResult();
+    }
+
+    /**
      * @param SearchData $search
      * @param Participant $participant
      * @return Sortie[]
      */
-    public function findSearch(SearchData $search, Participant $participant) : array
+    public function findSearch(SearchData $search, Participant $participant): array
     {
         $dateDuJour = new DateTime('now');
-        $dateLimite = date('Y-m-d H:i', strtotime('last month'));
+        $dateLimite = date('Y-m-d H:i', strtotime('-1 months'));
         $etatPasse = $this->getEntityManager()->getRepository(Etat::class)->findOneBy(['libelle' => 'Passée']);
         $query = $this
             ->createQueryBuilder('s')

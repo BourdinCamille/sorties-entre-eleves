@@ -15,7 +15,7 @@ class HandlingDates
         return $dateFormatee->format($format);
     }
 
-    // Permet d'ajouter des minutes à un objet de type DateTime et retourne le résultat au format prédéfini
+    // Permet d'ajouter des minutes à une date et retourne le résultat au format prédéfini
     public function addMinutesToDate(string $date, int $duree)
     {
         $dureeCalculee = '+'. $duree . 'minutes';

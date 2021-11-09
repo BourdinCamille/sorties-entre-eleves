@@ -39,45 +39,41 @@ class HomeController extends AbstractController
         $currentDate = new DateTime('now');
         $currentDate = $hd->formatDateToCompare($currentDate);
 
-        // On récupère toutes les sorties et les différents états
-        $sortiesEtatAChanger = $sortieRepo->findAll();
-        $ouvert = $etatRepo->findOneBy(['libelle' => 'Ouverte']);
+        // On récupère toutes les sorties jusqu'à il y a un mois et différents états
+        $sorties = $sortieRepo->findAllUntilLastMonth();
+        $creee = $etatRepo->findOneBy(['libelle' => 'Créée']);
         $cloture = $etatRepo->findOneBy(['libelle' => 'Clôturée']);
         $enCours = $etatRepo->findOneBy(['libelle' => 'Activité en cours']);
         $passe = $etatRepo->findOneBy(['libelle' => 'Passée']);
         $annule = $etatRepo->findOneBy(['libelle' => 'Annulée']);
 
-        foreach ($sortiesEtatAChanger as $sortie)
+        foreach ($sorties as $sortie)
         {
             $dateLimiteInscription = $hd->formatDateToCompare($sortie->getDateLimiteInscription());
             $dateHeureDebut = $hd->formatDateToCompare($sortie->getDateHeureDebut());
             $dateHeureFin = $hd->addMinutesToDate($dateHeureDebut, $sortie->getDuree());
             $etat = $sortie->getEtat();
 
-            if($etat == $ouvert && $etat != $annule && $dateLimiteInscription <= $currentDate)
+            if($etat != $creee && $etat != $annule && $dateLimiteInscription <= $currentDate)
             {
                 $sortie->setEtat($cloture);
                 $em->persist($sortie);
-                $em->flush();
             }
-            if($etat == $cloture && $etat != $annule && $dateHeureDebut <= $currentDate && $dateHeureFin > $currentDate)
+            if($etat != $creee && $etat != $annule && $dateHeureDebut <= $currentDate && $dateHeureFin > $currentDate)
             {
                 $sortie->setEtat($enCours);
                 $em->persist($sortie);
-                $em->flush();
             }
-            if($etat == $enCours && $etat != $annule && $dateHeureFin <= $currentDate)
+            if($dateHeureFin <= $currentDate)
             {
                 $sortie->setEtat($passe);
                 $em->persist($sortie);
-                $em->flush();
             }
+            $em->flush();
         }
 
         // On prépare les filtres de recherche et on effectue des vérifications sur la cohérence de l'intervalle de dates
         $data = new SearchData();
-        $sorties = $sortieRepo->findAll();
-
         $searchForm = $this->createForm(SearchType::class, $data);
         $searchForm->handleRequest($request);
 
